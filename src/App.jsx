@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 import Card from "@mui/material/Card";
-
-import "./App.css";
 import { CardContent } from "@mui/material";
+import "./App.css";
 
 function App() {
-  const [areas, setAreas] = useState([]);
+  const [areas, setAreas] = useState(
+    JSON.parse(localStorage.getItem("areas")) || []
+  );
   const [tempPostcode, setTempPostcode] = useState();
-  const [postcode, setPostcode] = useState("BB10");
+  const [postcode, setPostcode] = useState(
+    localStorage.getItem("postcode") || "BB10"
+  );
 
   const load = async () => {
     try {
@@ -22,7 +25,13 @@ function App() {
 
   const handlePostcode = (event) => {
     event.preventDefault();
-    setPostcode(tempPostcode);
+    if (tempPostcode === postcode) {
+      return;
+    } else {
+      setPostcode(tempPostcode);
+      localStorage.setItem("postcode", postcode);
+      localStorage.setItem("areas", JSON.stringify(areas));
+    }
   };
 
   useEffect(() => {
@@ -46,15 +55,18 @@ function App() {
       <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
       {areas.map((area) => {
         return (
-          <Card variant="outlined" sx={{ display: 'inline-block', maxWidth: 300 }}>
+          <Card
+            variant="outlined"
+            sx={{ display: "inline-block", maxWidth: 300 }}
+          >
             <CardContent>
               <h3>{area["place name"]}</h3>
-              <div class="flex-container">
-                <p class="flex-child">Latitude {area.latitude}</p>
-                <p class="flex-child">Longitude {area.longitude}</p>
+              <div className="flex-container">
+                <p className="flex-child">Latitude {area.latitude}</p>
+                <p className="flex-child">Longitude {area.longitude}</p>
               </div>
-              <div class="flex-container">
-                <p class="flex-child">{area.state}</p>
+              <div className="flex-container">
+                <p className="flex-child">{area.state}</p>
               </div>
             </CardContent>
           </Card>
