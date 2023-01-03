@@ -11,14 +11,25 @@ function App() {
   const [finalInput, setFinalInput] = useState("");
   const [invalidInput, setInvalidInput] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [postCodeCache, setPostCodeCache] = useState({});
 
   const load = async (postCode) => {
     setIsLoading(true);
     try {
-      const areaData = await getAreaData(postCode);
+      if (postCodeCache.hasOwnProperty(postCode)) {
+        setAreas(postCodeCache[postCode]);
+      } else {
+        const areaData = await getAreaData(postCode);
+
+        setAreas(areaData);
+        setPostCodeCache((cache) => {
+          const newCache = { ...cache };
+          newCache[postCode] = areaData;
+          return newCache;
+        });
+      }
       setIsLoading(false);
       setInvalidInput(false);
-      setAreas(areaData);
     } catch (error) {
       setIsLoading(false);
       if (error.response.status === 404) {
