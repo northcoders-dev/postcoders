@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAreaData } from './api';
+import Card from '@mui/material/Card';
 
 import './App.css';
 
@@ -9,7 +10,7 @@ function App() {
   const [searchComplete, setSearchComplete] = useState(false);
 
   const handleInput = e => {
-    setSearchComplete(false)
+    setSearchComplete(false);
     setOutcode(e.target.value);
   };
 
@@ -18,7 +19,8 @@ function App() {
       e.preventDefault();
       const areaData = await getAreaData(outcode);
       setAreas(areaData);
-      setSearchComplete(true)
+      setSearchComplete(true);
+      console.log(areas);
     } catch (error) {
       window.alert('todo: fix app');
     }
@@ -32,7 +34,18 @@ function App() {
         <input type="text" placeholder="e.g. 'M3'" onChange={handleInput} />
         <button type="submit">Submit</button>
       </form>
-      {(searchComplete) && <h2>{`Areas for ${outcode}: ${areas.length}`}</h2>}
+      {searchComplete && <h2>{`Areas for ${outcode}: ${areas.length}`}</h2>}
+      {areas.map(area => {
+        return (
+          <Card key={area['place name']}>
+            <h2>{area['place name']}</h2>
+            <p>Longitude: {area.longitude}</p>
+            <p>Latitude: {area.latitude}</p>
+            <p>Country: {area.state}</p>
+            <p>Country abbreviation: {area['state abbreviation']}</p>
+          </Card>
+        );
+      })}
     </div>
   );
 }
