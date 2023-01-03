@@ -14,7 +14,7 @@ function App() {
       areas.concat(areaData);
       
 
-      setAreas(areas);
+      setAreas(areaData);
       
     } catch (error) {
       console.log(error)
