@@ -1,12 +1,28 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding-top: 2vh;
   text-align: center;
+  min-height: 100vh;
 }
 
 .App {
-  height: 90vh;
+  height: 100%;
   width: 90vw;
   border: solid grey 2px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.AreaCards {
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  list-style-type: none;
+  width: 100vw;
 }
