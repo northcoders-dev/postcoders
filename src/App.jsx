@@ -12,6 +12,7 @@ function App() {
   const load = async (postcode) => {
     try {
       const areaData = await getAreaData(postcode);
+      console.log("test");
       setAreas(areaData);
     } catch (error) {
       window.alert("todo: fix app");
@@ -20,9 +21,13 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setCurrentPostcode(postcode);
-    await load(postcode);
-    setPostcode("");
+    if (currentPostcode !== postcode) {
+      setCurrentPostcode(postcode);
+      await load(postcode);
+      setPostcode("");
+    } else {
+      setPostcode("");
+    }
   };
 
   useEffect(() => {
@@ -37,7 +42,7 @@ function App() {
         Enter the outcode for the postcode below as follows: e.g. (BB10) for
         BB10 7ED or (M1) for M1 7ED
       </p>
-      <form action="submit" onSubmit={handleSubmit}>
+      <form className="outcodeForm" action="submit" onSubmit={handleSubmit}>
         <label htmlFor="postcodeInput">Enter Outcode:</label>
         <input
           id="postcodeInput"
@@ -48,12 +53,12 @@ function App() {
           }}
         />
         <button>Search for areas</button>
-        <section className="areaCards">
-          {areas.map((area) => {
-            return <AreaCard key={area["place name"]} area={area} />;
-          })}
-        </section>
       </form>
+      <section className="areaCards">
+        {areas.map((area) => {
+          return <AreaCard key={area["place name"]} area={area} />;
+        })}
+      </section>
     </div>
   );
 }

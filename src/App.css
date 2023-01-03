@@ -23,3 +23,11 @@
   width: 200px;
   height: 200px;
 }
+
+.outcodeForm {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  max-width: 30%;
+  margin: auto;
+}
