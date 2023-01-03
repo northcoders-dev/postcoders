@@ -12,10 +12,12 @@ function App() {
       const areaData = await getAreaData()
 
       areas.concat(areaData);
-  
+      
+
       setAreas(areas);
+      
     } catch (error) {
-      window.alert("todo: fix app")
+      console.log(error)
     }
   }
 
