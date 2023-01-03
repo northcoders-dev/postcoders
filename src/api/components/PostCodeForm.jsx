@@ -16,6 +16,7 @@ const PostCodeForm = ({ areas, setAreas }) => {
   const load = async (postCode) => {
     setIsLoading(true);
     try {
+      //handle api calling
       if (postCodeCache.hasOwnProperty(postCode)) {
         setAreas(postCodeCache[postCode]);
       } else {
@@ -28,6 +29,7 @@ const PostCodeForm = ({ areas, setAreas }) => {
           return newCache;
         });
       }
+      //reset UI
       setIsLoading(false);
       setInvalidInput(false);
     } catch (error) {
@@ -43,9 +45,9 @@ const PostCodeForm = ({ areas, setAreas }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (postCodeInput.length <= 4 && postCodeInput.length > 0) {
-      setInvalidInput(false);
       setFinalInput(postCodeInput.trim().toUpperCase());
       load(postCodeInput.trim().toUpperCase());
+      setInvalidInput(false);
     } else {
       setInvalidInput(true);
     }

@@ -1,6 +1,5 @@
-import { useState } from "react";
-
 import "./App.css";
+import { useState } from "react";
 import PostCodeForm from "./api/components/PostCodeForm";
 import AreaCards from "./api/components/AreaCards";
 
