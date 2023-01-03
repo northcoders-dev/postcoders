@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 
 import "./App.css";
+import AreaCard from "./components/AreaCard";
 
 function App() {
   const [areas, setAreas] = useState([]);
@@ -11,7 +12,6 @@ function App() {
   const load = async (postcode) => {
     try {
       const areaData = await getAreaData(postcode);
-
       setAreas(areaData);
     } catch (error) {
       window.alert("todo: fix app");
@@ -48,6 +48,11 @@ function App() {
           }}
         />
         <button>Search for areas</button>
+        <section className="areaCards">
+          {areas.map((area) => {
+            return <AreaCard key={area["place name"]} area={area} />;
+          })}
+        </section>
       </form>
     </div>
   );

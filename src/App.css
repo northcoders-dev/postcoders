@@ -10,3 +10,16 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.areaCards {
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.areaCard {
+  width: 200px;
+  height: 200px;
+}
