@@ -10,3 +10,12 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.flex-container {
+  display: flex;
+}
+
+.flex-child {
+  flex: 1;
+  margin: 2px;
+} 
