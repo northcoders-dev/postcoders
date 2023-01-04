@@ -8,6 +8,7 @@ function App() {
   const [areas, setAreas] = useState([]);
   const [outcode, setOutcode] = useState('');
   const [searchComplete, setSearchComplete] = useState(false);
+  const [cache, setCache] = useState({});
 
   const handleInput = e => {
     setSearchComplete(false);
@@ -15,14 +16,23 @@ function App() {
   };
 
   const handleSubmit = async e => {
-    try {
+    if (cache.hasOwnProperty(outcode)) {
       e.preventDefault();
-      const areaData = await getAreaData(outcode);
-      setAreas(areaData);
+      setAreas(cache[`${outcode}`]);
       setSearchComplete(true);
-      console.log(areas);
-    } catch (error) {
-      window.alert('todo: fix app');
+    } else {
+      try {
+        e.preventDefault();
+        const areaData = await getAreaData(outcode);
+        setAreas(areaData);
+        setCache(currCache => {
+          return { ...currCache, [`${outcode}`]: areaData };
+        });
+        setSearchComplete(true);
+        console.log(cache);
+      } catch (error) {
+        window.alert('todo: fix app');
+      }
     }
   };
 
