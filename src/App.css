@@ -9,4 +9,16 @@
   height: 90vh;
   width: 90vw;
   border: solid grey 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+img {
+  width: 10em;
+}
+
+.postcode-input {
+  margin-bottom: 2em;
 }
