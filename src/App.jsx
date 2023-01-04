@@ -2,17 +2,19 @@ import { useEffect, useState } from 'react'
 import { getAreaData } from './api'
 import './App.css'
 import OutlinedCard from './OutlinedCard';
+import getData from './get-data';
 
 function App() {
 
   const [areas, setAreas] = useState([]);
   const [postcode, setPostcode] = useState('')
   const [finalPostcode, setFinalPostcode] = useState('')
+  const [url, setUrl] = useState('')
+
   const load = async () => {
     try {
       const areaData = await getAreaData(postcode)
 
-  
       setAreas(areaData);
     } catch (error) {
      error.message !== "Request failed with status code 404" && console.log(error.message)
@@ -22,10 +24,12 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setFinalPostcode(postcode)
+    setUrl(`https://api.zippopotam.us/GB/${finalPostcode}`)
   try {
     await getAreaData(finalPostcode)
+    await getData(url)
   } catch (err) {
-    err.message !== "Request failed with status code 404" && console.log(error.message)
+    err.message !== "Request failed with status code 404" && console.log(err.message)
     }
   }
 
