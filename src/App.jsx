@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 import PostcodeCard from "./PostcodeCard";
+
 import "./App.css";
 
 function App() {
@@ -32,7 +33,7 @@ function App() {
   }, [postCode]);
 
   return (
-    <div className="App">
+    <div className="App" style={{ height: "auto", minHeight: "90vh" }}>
       <h1>Postcoders</h1>
       <h2>{`Areas for ${postCode.toUpperCase() || "Postcode"}: ${
         areas.length
@@ -44,6 +45,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchField">
           <input
+            style={{ width: "5rem", fontSize: "larger" }}
             className="searchField"
             type="text"
             value={userInput}
@@ -54,7 +56,7 @@ function App() {
         </label>
         <button type="submit">Search</button>
       </form>
-      <ul>
+      <ul style={{ padding: 0, margin: 0 }}>
         {areas.map((area) => {
           return <PostcodeCard key={area["place name"]} area={area} />;
         })}
