@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { getAreaData } from './api';
 
 import './App.css';
+import AreaCard from './components/AreaCard';
 
 function App() {
   const [areas, setAreas] = useState([]);
@@ -52,6 +53,17 @@ function App() {
         </label>
         <button type='submit'>GO!</button>
       </form>
+      <div className='cards-container'>
+        {areas.map((area) => {
+          return (
+            <AreaCard
+              key={area['place name']}
+              area={area}
+              outcode={newOutcode}
+            ></AreaCard>
+          );
+        })}
+      </div>
     </div>
   );
 }
