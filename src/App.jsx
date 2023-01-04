@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAreaData } from './api';
 import SearchPostcode from './Components/SearchPostcode';
+import PostcodeResults from './Components/PostcodeResults';
 import './App.css';
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
       <h1>Postcoders</h1>
       <SearchPostcode value={value} setValue={setValue} setNewValue={setNewValue}/>
       <h2>{`Areas for ${newValue}: ${areas.length}`}</h2>
+      <PostcodeResults areas={areas}/>
     </div>
   )
 }
