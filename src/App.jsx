@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
-
+import PostcodeCard from "./PostcodeCard";
 import "./App.css";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
 
       setAreas(areaData);
     } catch (error) {
-      window.alert("todo: fix app");
+      window.alert("Invalid Postcode");
     }
   };
 
@@ -34,7 +34,13 @@ function App() {
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      <h2>{`Areas for ${postCode.toUpperCase()}: ${areas.length}`}</h2>
+      <h2>{`Areas for ${postCode.toUpperCase() || "Postcode"}: ${
+        areas.length
+      }`}</h2>
+      <h4>
+        Please only include the first part of your postcode in the search (e.g.
+        “M1” rather than the full “M1 7ED”).
+      </h4>
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchField">
           <input
@@ -48,6 +54,11 @@ function App() {
         </label>
         <button type="submit">Search</button>
       </form>
+      <ul>
+        {areas.map((area) => {
+          return <PostcodeCard key={area["place name"]} area={area} />;
+        })}
+      </ul>
     </div>
   );
 }
