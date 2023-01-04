@@ -8,6 +8,7 @@ function App() {
   const [areas, setAreas] = useState([]);
   const [userInput, setUserInput] = useState("");
   const [postCode, setPostCode] = useState("");
+  const [cache, setCache] = useState("");
 
   const handleChange = (event) => {
     setUserInput(event.target.value);
@@ -20,9 +21,17 @@ function App() {
 
   const load = async (postCode) => {
     try {
-      const areaData = await getAreaData(postCode);
-
-      setAreas(areaData);
+      if (cache[postCode]) {
+        setAreas(cache[postCode]);
+      } else {
+        const areaData = await getAreaData(postCode);
+        setCache((currCache) => {
+          const updatedCache = { ...currCache };
+          updatedCache[postCode] = areaData;
+          return updatedCache;
+        });
+        setAreas(areaData);
+      }
     } catch (error) {
       window.alert("Invalid Postcode");
     }
@@ -45,7 +54,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label htmlFor="searchField">
           <input
-            style={{ width: "5rem", fontSize: "larger" }}
+            required
             className="searchField"
             type="text"
             value={userInput}
@@ -54,7 +63,9 @@ function App() {
             onChange={handleChange}
           />
         </label>
-        <button type="submit">Search</button>
+        <button className="searchButton" type="submit">
+          Search
+        </button>
       </form>
       <ul style={{ padding: 0, margin: 0 }}>
         {areas.map((area) => {

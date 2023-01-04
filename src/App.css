@@ -10,3 +10,9 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.searchField,
+.searchButton {
+  padding: 5px;
+  font-size: large;
+}
