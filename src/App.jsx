@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 import Error from "./Error";
+import AreaCard from "./AreaCard";
 
 import "./App.css";
 
@@ -12,15 +13,15 @@ function App() {
 
   const load = async () => {
     try {
+      setLoading(true);
       const areaData = await getAreaData(postcode);
 
       setAreas(areaData);
-      console.log(areaData);
       setError(null);
     } catch (error) {
       setError(error);
-      console.log(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -41,6 +42,10 @@ function App() {
       <Error error={error} />
 
       <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
+
+      {(loading) ? <p>Loading ... </p> : areas.map((area, i) => (
+        <AreaCard key={i} area={area}/>
+      ))}
     </div>
   );
 }
