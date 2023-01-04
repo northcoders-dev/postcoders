@@ -8,14 +8,15 @@ function App() {
   const [areas, setAreas] = useState([]);
   const [outcodeInput, setOutcodeInput] = useState('');
   const [newOutcode, setNewOutcode] = useState('BB10');
+  const [displayedOutcode, setDisplayedOutcode] = useState('BB10');
 
   const load = async (outcode) => {
     try {
       const areaData = await getAreaData(outcode);
-
       setAreas(areaData);
+      localStorage.setItem(newOutcode, JSON.stringify(areaData));
     } catch (error) {
-      window.alert('todo: fix app');
+      window.alert('Please try another outcode');
     }
   };
 
@@ -25,14 +26,20 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setNewOutcode(outcodeInput);
+    if (localStorage.getItem(outcodeInput)) {
+      setAreas(JSON.parse(localStorage.getItem(outcodeInput)));
+      setDisplayedOutcode(outcodeInput);
+    } else {
+      setNewOutcode(outcodeInput);
+      setDisplayedOutcode(outcodeInput);
+    }
     setOutcodeInput('');
   };
 
   return (
     <div className='App'>
       <h1>Postcoders</h1>
-      <h2>{`Areas for ${newOutcode}: ${areas.length}`}</h2>
+      <h2>{`Areas for ${displayedOutcode}: ${areas.length}`}</h2>
       <h3>Try another postcode!</h3>
       <p>
         You only need to enter the "outcode" for example “M1” rather than the
@@ -51,7 +58,7 @@ function App() {
             }}
           ></input>
         </label>
-        <button type='submit'>GO!</button>
+        <button type='submit'>Search</button>
       </form>
       <div className='cards-container'>
         {areas.map((area) => {
@@ -59,7 +66,7 @@ function App() {
             <AreaCard
               key={area['place name']}
               area={area}
-              outcode={newOutcode}
+              outcode={displayedOutcode}
             ></AreaCard>
           );
         })}
