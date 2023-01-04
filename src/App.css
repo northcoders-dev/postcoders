@@ -6,7 +6,11 @@
 }
 
 .App {
-  height: 90vh;
-  width: 90vw;
+  /* height: 90vh; */
+  width: 70vw;
   border: solid grey 2px;
+}
+
+li {
+  list-style: none;
 }

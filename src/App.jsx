@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAreaData } from './api'
 import './App.css'
+import OutlinedCard from './OutlinedCard';
 
 function App() {
 
@@ -14,7 +15,7 @@ function App() {
   
       setAreas(areaData);
     } catch (error) {
-      console.log(error.message)
+     error.message !== "Request failed with status code 404" && console.log(error.message)
     }
   }
 
@@ -24,7 +25,7 @@ function App() {
   try {
     await getAreaData(finalPostcode)
   } catch (err) {
-      console.log(err)
+    err.message !== "Request failed with status code 404" && console.log(error.message)
     }
   }
 
@@ -46,6 +47,15 @@ function App() {
         }}
         />
         </form>
+        <ul>
+        {areas.map((area) => {
+          return (
+            <li key={area["place name"]}>
+        <OutlinedCard place_name={area["place name"]} longitude={area.longitude} state={area.state} latitude={area.latitude}/>
+            </li>
+          )
+        })}
+        </ul>
      </div>
   )
 }
