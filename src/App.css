@@ -10,3 +10,7 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.cards {
+  display: flex;
+}
