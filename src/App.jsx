@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getAreaData } from './api'
-
+import Input from './Input';
 import './App.css'
 
 function App() {
@@ -26,7 +26,8 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Postcoders</h1>
+      <h1>Postcoders</h1>  
+      <Input/>
       <h2>{`Areas for BB10: ${areas.length}`}</h2>
     </div>
   )
