@@ -10,3 +10,26 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.label, input{
+  display:flex;
+  flex-direction:column;
+  text-align: center;
+  font-size: 20px;
+  margin-left: 20%;
+  margin-right:20%
+
+}
+
+.form{
+  font-size: 35px ;
+    text-align: center;
+    color: #f3ede9;
+    margin: 0 0 .5vh 0;
+
+}
+
+.submitBtn {
+  margin: 0; 
+  border-radius: 20px 20px; 
+}
