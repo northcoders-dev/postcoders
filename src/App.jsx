@@ -10,13 +10,24 @@ function App() {
   const [postcode, setPostcode] = useState("");
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+  const [cache, setCache] = useState({});
+  const [validPostcode, setValidPostcode] = useState(false);
 
   const load = async () => {
     try {
-      setLoading(true);
-      const areaData = await getAreaData(postcode);
+      if (!cache[postcode]) {
+        setLoading(true);
 
-      setAreas(areaData);
+        const areaData = await getAreaData(postcode);
+        setAreas(areaData);
+        setCache((prevCache) => ({
+          ...prevCache,
+          [postcode]: areaData,
+        }));
+      } else {
+        setAreas(cache[postcode]);
+      }
+
       setError(null);
     } catch (error) {
       setError(error);
@@ -25,7 +36,10 @@ function App() {
   };
 
   useEffect(() => {
-    if (/(^[a-zA-z]+\d)/.test(postcode)) load();
+    if (/(^[a-zA-z]+\d)/.test(postcode)) {
+      load();
+      setValidPostcode(true);
+    } else setValidPostcode(false);
   }, [postcode]);
 
   return (
@@ -35,17 +49,28 @@ function App() {
       <div className="searchBar">
         <input
           type="text"
-          placeholder="Search Postcode"
+          placeholder="Search"
           onChange={(e) => setPostcode(e.target.value)}
         ></input>
       </div>
       <Error error={error} />
 
-      <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
-
-      {(loading) ? <p>Loading ... </p> : areas.map((area, i) => (
-        <AreaCard key={i} area={area}/>
-      ))}
+      {!validPostcode || error ? (
+        <p>Please enter a valid outcode </p>
+      ) : (
+        <div>
+          {loading ? (
+            <p>Loading ... </p>
+          ) : (
+            <div>
+              <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
+              {areas.map((area, i) => (
+                <AreaCard key={i} area={area} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
