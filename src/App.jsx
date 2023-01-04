@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
-
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import pcodersLogo from "./pcodersLogo.svg";
 import "./App.css";
 
 function App() {
@@ -12,17 +15,17 @@ function App() {
   const [errMessage, setErrMessage] = useState("");
   const [postcodeSubmitted, setPostcodeSubmitted] = useState(false);
 
+  //api call for areas made here with submitted postcode as argument
   const load = async (postcode) => {
     try {
-      console.log(postcode, "<<postcode");
       const areaData = await getAreaData(postcode);
       setAreas([...areaData]);
-      console.log(areas, "<areas");
     } catch (error) {
       window.alert({ error });
     }
   };
 
+  //on submit postcode (for api) is changed to user submitted posted
   const submitPostcode = (submittedPostcode) => {
     setPostcode(submittedPostcode);
     setPostcodeSubmitted(true);
@@ -35,7 +38,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Postcoders</h1>
+      <img src={pcodersLogo} alt="postcoders logo"></img>
+
+      {/*==========FORM==============*/}
       <form
         className="postcode-input"
         onSubmit={(e) => {
@@ -59,7 +64,32 @@ function App() {
         <button type="submit">Find Areas</button>
       </form>
 
-      <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
+      {/*==========CARD==============*/}
+      {postcodeSubmitted ? (
+        <Card variant="outlined" sx={{ minWidth: 350 }}>
+          <CardContent>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ fontSize: 18, fontWeight: 500 }}
+            >
+              {`${areas.length} area/s found for ${postcode}`}
+            </Typography>
+            {areas.map((area) => {
+              return (
+                <Typography
+                  key={area["place name"] + area.latitude}
+                  variant="body2"
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {`${areas.indexOf(area) + 1}. ${area["place name"]}`}
+                </Typography>
+              );
+            })}
+          </CardContent>
+        </Card>
+      ) : null}
     </div>
   );
 }
