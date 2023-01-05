@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAreaData } from './api';
+import AreaCard from './components/AreaCard';
+import { Card, Container, Grid } from '@material-ui/core';
 
 import './App.css';
 
@@ -38,6 +40,15 @@ function App() {
       {formSubmitted ? (
         <div>
           <h2>{`Areas for ${oldAreaCode}: ${areas.length}`}</h2>
+          <Container>
+            <Grid container spacing={1} justifyContent="center">
+              {areas.map((places) => (
+                <Grid item>
+                  <AreaCard key={places['place name']} places={places} />
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
         </div>
       ) : null}
     </div>
