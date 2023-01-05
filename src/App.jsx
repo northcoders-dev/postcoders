@@ -19,7 +19,6 @@ function App() {
       setAreas(areaData);
       setIsLoading(false);
     } catch (error) {
-      // window.alert("todo: fix app");
       setIsLoading(false);
     }
   };
