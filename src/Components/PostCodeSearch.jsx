@@ -1,6 +1,8 @@
-import { useState, props} from 'react'
+import { useState, useMemo} from 'react'
 import { getAreaData } from '../api'
 import { InfoCard } from './InfoCard';
+import {AddDataIntoCache } from './CacheStorage'
+
 
 export const PostCodeSearch = () =>{
     
@@ -22,18 +24,17 @@ export const PostCodeSearch = () =>{
 const handleSubmit = () =>{
     getAreaData(input).then((res)=>{
         setPostCode(res)
-        console.log('info', postCode[0])
     }).catch((error)=>{
         console.log(error)
     }) 
 }
-
 
   return <div>
     <button onClick={handleSubmit}>Search</button>
 <input  placeholder="enter postcode" type="text" id="postcode" onChange={handleChange}/>
     <h2>{`Areas for postcode ${input}: ${postCode.length}`}</h2>
     <InfoCard PostCodeinfo={postCode}/>
+   <AddDataIntoCache PostCodeQuery={input}/>
   </div>
 
 }
