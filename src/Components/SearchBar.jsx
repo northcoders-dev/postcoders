@@ -6,7 +6,7 @@ export const SearchBar = ({setPostcode}) => {
 
 const handleSubmit = (event)=>{
   event.preventDefault()
-  if(newPostcode.match(/^([A-Z][A-Z]?\d\d?)$/i)){
+  if(newPostcode.trim().match(/^([A-Z][A-Z]?\d\d?)$/i)){
     
     setPostcode(newPostcode)
   

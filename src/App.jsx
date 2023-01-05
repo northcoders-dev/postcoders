@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getAreaData } from './api/index'
 
 import './App.css'
+import { AreaList } from './Components/AreaList';
 import SearchBar from './Components/SearchBar.jsx';
 
 function App() {
@@ -13,8 +14,8 @@ function App() {
     try {
       const areaData = await getAreaData(postcode) 
       areas.concat(areaData);
-  
       setAreas(areaData);
+      
     } catch (error) {
       window.alert("todo: fix app")
     }
@@ -30,6 +31,7 @@ function App() {
       <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
 
       <SearchBar setPostcode={setPostcode}/>
+      <AreaList areas={areas}/>
     </div>
   )
 }
