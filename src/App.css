@@ -10,3 +10,7 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+ul {
+  list-style-type: none; 
+}
