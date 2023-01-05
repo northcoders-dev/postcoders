@@ -10,3 +10,15 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.Card {
+  width: 400px;
+  margin: auto;
+  background-color: "#242424";
+}
+.CardContent {
+  background-color: "#242424";
+}
+.Card--Typography {
+  color: F2F0EC;
+}

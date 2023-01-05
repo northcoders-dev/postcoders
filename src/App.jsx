@@ -11,9 +11,14 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitted(true);
-    getAreaData(userInput).then((result) => {
-      setAreas(result);
-    });
+    getAreaData(userInput)
+      .then((result) => {
+        console.log(result);
+        setAreas(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -24,6 +29,7 @@ function App() {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
+            maxLength={4}
             onChange={(e) => {
               setUserInput(e.target.value);
             }}
