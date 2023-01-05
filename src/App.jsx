@@ -25,10 +25,10 @@ function App() {
       setIsLoading(true);
       const areaData = await getAreaData(outCode);
       setAreas(areaData);
-      setIsError(false);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+      alert(error);
     }
   };
 
