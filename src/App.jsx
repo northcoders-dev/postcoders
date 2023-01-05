@@ -5,6 +5,7 @@ import { Card, CardContent, Typography } from "@mui/material";
 
 import "./App.css";
 
+const cache = {};
 function App() {
   const [areas, setAreas] = useState([]);
   const [postCodeInput, setPostCodeInput] = useState("");
@@ -15,13 +16,20 @@ function App() {
 
   const handlePostCodeSubmit = (event) => {
     event.preventDefault();
-    getAreaData(postCodeInput)
-      .then((areaData) => {
-        setAreas(areaData);
-      })
-      .catch((error) => {
-        window.alert("Please provide a valid postcode (outcode only)");
-      });
+
+    if (cache[postCodeInput]) {
+      const areaData = cache[postCodeInput];
+      setAreas(areaData);
+    } else {
+      getAreaData(postCodeInput)
+        .then((areaData) => {
+          cache[postCodeInput] = areaData;
+          setAreas(areaData);
+        })
+        .catch((error) => {
+          window.alert("Please provide a valid postcode (outcode only)");
+        });
+    }
   };
 
   return (
