@@ -47,7 +47,6 @@ function App() {
       />
       <button onClick={handleSubmit}>Submit</button>
 
-      {console.log(areas)}
       {areas.map((area) => {
         return (
           <Card
