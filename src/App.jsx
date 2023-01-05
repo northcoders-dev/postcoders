@@ -11,21 +11,7 @@ function App() {
   // user input state for postcode
   const [outCode, setOutCode] = useState("");
   // to load message while searching for postcode place / API CALLS
-  const [isLoading, setIsLoading] = useState(true);
-
-  const load = async () => {
-    try {
-      const areaData = await getAreaData();
-      setAreas(areaData);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    load();
-  }, []);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputChangeHandler = (e) => {
     const enteredOutcode = e.target.value;
