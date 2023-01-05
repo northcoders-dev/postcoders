@@ -2,17 +2,24 @@ import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 
 import "./App.css";
+import Message from "./Components/Message";
 
 function App() {
+  // container that stores and set places for specific post code
   const [areas, setAreas] = useState([]);
+  // user input state for postcode
+  const [outCode, setOutCode] = useState("");
+  // to load message while searching for postcode place / API CALLS
+  const [isLoading, setIsLoading] = useState(true);
 
   const load = async () => {
     try {
       const areaData = await getAreaData();
       setAreas(areaData);
+      setIsLoading(false);
     } catch (error) {
       // window.alert("todo: fix app");
-      console.log(error);
+      setIsLoading(false);
     }
   };
 
@@ -20,10 +27,43 @@ function App() {
     load();
   }, []);
 
+  const inputChangeHandler = (e) => {
+    const enteredOutcode = e.target.value;
+    setOutCode(enteredOutcode);
+  };
+
+  const postCodeSearchHandler = async () => {
+    try {
+      setIsLoading(true);
+      const areaData = await getAreaData(outCode);
+      setAreas(areaData);
+      setIsError(false);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      <h2>{`Areas for BB10: ${areas.length}`}</h2>
+
+      <input
+        value={outCode}
+        onChange={inputChangeHandler}
+        placeholder="enter here..."
+      />
+      <button onClick={postCodeSearchHandler} style={{ marginLeft: "10px" }}>
+        Search
+      </button>
+      {areas.outCode ? (
+        <h1>
+          Areas for {areas.outCode} : {areas.places.length}
+        </h1>
+      ) : (
+        <h1>Enter a post Code to find</h1>
+      )}
+      {isLoading && <Message text="Loading places please wait ..." />}
     </div>
   );
 }
