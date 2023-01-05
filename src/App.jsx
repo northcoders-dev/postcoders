@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getAreaData } from './api';
 import AreaCard from './components/AreaCard';
-import { Card, Container, Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 
 import './App.css';
 
@@ -13,13 +13,18 @@ function App() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const areaData = await getAreaData(areaCode);
-      setFormSubmitted(true);
-      setOldAreaCode(areaCode);
-      setAreas(areaData);
-    } catch (error) {
-      window.alert(error);
+    if (localStorage.getItem(areaCode)) {
+      setAreas(JSON.parse(localStorage.getItem(areaCode)));
+    } else {
+      try {
+        const areaData = await getAreaData(areaCode);
+        setFormSubmitted(true);
+        setOldAreaCode(areaCode);
+        setAreas(areaData);
+        localStorage.setItem(areaCode, JSON.stringify(areaData));
+      } catch (error) {
+        window.alert(error);
+      }
     }
   };
 
@@ -43,7 +48,7 @@ function App() {
           <Container>
             <Grid container spacing={1} justifyContent="center">
               {areas.map((places) => (
-                <Grid item>
+                <Grid key={places['place name']} item>
                   <AreaCard key={places['place name']} places={places} />
                 </Grid>
               ))}
