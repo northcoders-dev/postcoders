@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getAreaData } from './api'
+import { getAreaData } from './api/index'
 
 import './App.css'
 
@@ -9,11 +9,10 @@ function App() {
 
   const load = async () => {
     try {
-      const areaData = await getAreaData()
-
+      const areaData = await getAreaData() 
       areas.concat(areaData);
   
-      setAreas(areas);
+      setAreas(areaData);
     } catch (error) {
       window.alert("todo: fix app")
     }
