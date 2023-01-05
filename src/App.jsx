@@ -43,13 +43,12 @@ function App() {
         />
         <button style={{ marginLeft: "10px" }}>Search</button>
       </form>
-
       {areas.outCode ? (
         <h1>
           Areas for {areas.outCode} : {areas.places.length}
         </h1>
       ) : (
-        <h1>Enter a post Code to find</h1>
+        <h1>Enter a post Code to find </h1>
       )}
       {isLoading && <Message text="Loading places please wait ..." />}
       {areas.places && <BasicCard places={areas.places} />}
