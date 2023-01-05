@@ -20,6 +20,7 @@ function App() {
 
   const postCodeSearchHandler = async (e) => {
     e.preventDefault();
+    setOutCode("");
     try {
       setIsLoading(true);
       const areaData = await getAreaData(outCode);
