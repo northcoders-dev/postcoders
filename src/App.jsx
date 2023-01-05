@@ -18,7 +18,8 @@ function App() {
     setOutCode(enteredOutcode);
   };
 
-  const postCodeSearchHandler = async () => {
+  const postCodeSearchHandler = async (e) => {
+    e.preventDefault();
     try {
       setIsLoading(true);
       const areaData = await getAreaData(outCode);
@@ -33,15 +34,15 @@ function App() {
   return (
     <div className="App">
       <h1>Postcoders</h1>
+      <form onSubmit={postCodeSearchHandler}>
+        <input
+          value={outCode}
+          onChange={inputChangeHandler}
+          placeholder="enter here..."
+        />
+        <button style={{ marginLeft: "10px" }}>Search</button>
+      </form>
 
-      <input
-        value={outCode}
-        onChange={inputChangeHandler}
-        placeholder="enter here..."
-      />
-      <button onClick={postCodeSearchHandler} style={{ marginLeft: "10px" }}>
-        Search
-      </button>
       {areas.outCode ? (
         <h1>
           Areas for {areas.outCode} : {areas.places.length}
