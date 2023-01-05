@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 
 import "./App.css";
+import BasicCard from "./Components/Card";
 import Message from "./Components/Message";
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
         <h1>Enter a post Code to find</h1>
       )}
       {isLoading && <Message text="Loading places please wait ..." />}
+      {areas.places && <BasicCard places={areas.places} />}
     </div>
   );
 }
