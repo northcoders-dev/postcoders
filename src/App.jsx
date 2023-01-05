@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { getAreaData } from './api'
 import { Card, CardContent, Typography } from '@mui/material';
-
 import './App.css'
 
-function App() {
+const cache = {}
 
+function App() {
+  
   const [areas, setAreas] = useState([]);
   const [areaInput, setAreaInput] = useState('');
 
@@ -15,13 +16,19 @@ function App() {
   
   const handleAreaSubmit = (event) => {
     event.preventDefault();
-    getAreaData(areaInput)
-      .then((newAreas) => {
-        setAreas(newAreas)
+    if (cache[areaInput]) {
+      const areaData = cache[areaInput];
+      setAreas(areaData)
+    } else {
+      getAreaData(areaInput)
+      .then((areaData) => {
+        cache[areaInput] = areaData
+        setAreas(areaData)
       })
       .catch((error) => {
         window.alert('Provide a valid area code - only the first half of the postcode (e.g. M13) is necessary!')
       })
+    }
   }
 
   return (
@@ -34,25 +41,22 @@ function App() {
       {areas.map((area) => {
         return (
           <Card
-            sx={{ maxWidth: 325}}
+            sx={{ maxWidth: 325, backgroundColor: 'black', padding: 1, borderRadius: 1}}
             variant='outlined'
             key={area['place name']}
           >
             <CardContent>
-              <Typography variant='h4' component='div'>
+              <Typography variant='h4' color='red' component='div'>
                 {area['place name']}
               </Typography>
-              <Typography color='text.secondary' sx={{ fontSize: 16}}>
+              <Typography color='red' sx={{ fontSize: 16}}>
                 Country: {area.state}
               </Typography>
-              <Typography color='text.secondary' sx={{ fontSize: 16}}>
+              <Typography color='red' sx={{ fontSize: 16}}>
                 Country Abbreviation: {area['state abbreviation']}
               </Typography>
-              <Typography color='text.secondary' sx={{ fontSize: 16}}>
-                Longitude: {area.longitude}
-              </Typography>
-              <Typography color='text.secondary' sx={{ fontSize: 16}}>
-                Latitude: {area.latitude}
+              <Typography color='red' sx={{ fontSize: 16}}>
+                Coordinates: {area.latitude}, {area.longitude}
               </Typography>
             </CardContent>
           </Card>
