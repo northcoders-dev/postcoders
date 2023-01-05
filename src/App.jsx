@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
+import { Card } from "@mui/material";
 
 import "./App.css";
 
@@ -45,6 +46,16 @@ function App() {
         maxLength={4}
       />
       <button onClick={handleSubmit}>Submit</button>
+
+      {console.log(areas)}
+      {areas.map((area) => {
+        return (
+          <Card
+            id="card"
+            key={area["place name"]}
+          >{`${area["place name"]} is an area within ${area.state}, it is located at a latitude of ${area.latitude} and a longitude of ${area.longitude}.`}</Card>
+        );
+      })}
     </div>
   );
 }
