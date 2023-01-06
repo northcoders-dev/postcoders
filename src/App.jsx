@@ -16,7 +16,11 @@ function App() {
     try {
       const areaData = await getAreaData(outcodeSearch);
       setAreas(areaData);
-      setRenderedOutcode(outcodeSearch);
+      setRenderedOutcode(outcodeSearch.toUpperCase());
+      localStorage.setItem(
+        outcodeSearch.toUpperCase(),
+        JSON.stringify(areaData)
+      );
     } catch (error) {
       window.alert("todo: fix app");
     }
@@ -24,6 +28,11 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (localStorage.getItem(outcodeSearch.toUpperCase())) {
+      setAreas(JSON.parse(localStorage.getItem(outcodeSearch.toUpperCase())));
+      setRenderedOutcode(outcodeSearch.toUpperCase());
+      return;
+    }
     let outcodeRegEx = /[A-Z]{1,2}[0-9]{1,2}/i;
 
     if (outcodeSearch === "") {
@@ -70,9 +79,7 @@ function App() {
         <input type="submit" value="submit" />
       </form>
       {renderedOutcode ? (
-        <h2>
-          {`Areas for ${renderedOutcode.toUpperCase()}: ${areas.length}`}{" "}
-        </h2>
+        <h2>{`Areas for ${renderedOutcode}: ${areas.length}`} </h2>
       ) : (
         ""
       )}
