@@ -6,7 +6,7 @@ import PostCodeEntry from "./components/PostCodeEntry";
 import SubmitButton from "./components/SubmitButton";
 
 function App() {
-  const [areas, setAreas] = useState([]);
+  const [areas, setAreas] = useState({});
   const [postcode, setPostcode] = useState("");
   const [submitted, setSubmitted] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,15 +17,21 @@ function App() {
   };
 
   const handleOnClick = () => {
-    load(postcode);
     setSubmitted(postcode);
+    console.log(submitted);
+    if (!areas[postcode]) {
+      load(postcode);
+    }
+    if (areas[postcode]) {
+      setError(false);
+    }
   };
 
   const load = async (postcode) => {
     setLoading(true);
     try {
       const areaData = await getAreaData(postcode);
-      setAreas(areaData);
+      setAreas({ ...areas, [postcode]: areaData });
       setError(false);
     } catch (error) {
       setError(true);
@@ -33,21 +39,30 @@ function App() {
     setLoading(false);
   };
 
+  console.log(error, areas, "areas outside");
+
   return (
     <div className="App">
       <h1>Postcoders</h1>
+      <h3>Please enter the first part of a UK postcode below: </h3>
+
       <PostCodeEntry
         postcode={postcode}
         handleChangePostcode={handleChangePostcode}
       />
       <SubmitButton handleOnClick={handleOnClick} />
-      {error && <p>error: please check the postcode and try again</p>}
+      {error && !loading && (
+        <p>
+          error: please check the postcode (make sure to only enter the first
+          part) and try again.
+        </p>
+      )}
       {loading && <p>loading...</p>}
       {submitted && !loading && !error && (
         <>
-          <h2>{`Areas for ${submitted}: ${areas.length}`}</h2>
+          <h2>{`Areas for ${submitted}: ${areas[submitted].length}`}</h2>
           <div className="card-container">
-            <PlaceCard areas={areas} />
+            <PlaceCard areas={areas[submitted]} />
           </div>
         </>
       )}
