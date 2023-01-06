@@ -9,17 +9,19 @@ function App() {
   const [areas, setAreas] = useState([]);
   const [outcode, setOutcode] = useState("");
   const [outcodeFromClick, setOutcodeFromClick] = useState("");
+  const [previousSearch, setPreviousSearch] = useState("");
 
   const handleClick = () => {
     setOutcodeFromClick(outcode);
   };
 
   useEffect(() => {
-    if (outcodeFromClick !== "") {
+    if (outcodeFromClick !== "" && outcodeFromClick !== previousSearch) {
       axios
         .get(`https://api.zippopotam.us/GB/${outcodeFromClick}`)
         .then((res) => {
           setAreas(res.data.places);
+          setPreviousSearch(outcodeFromClick);
         });
     }
   }, [outcodeFromClick]);
