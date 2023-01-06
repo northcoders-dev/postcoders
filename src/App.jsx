@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
+// import Card from "@mui/material/Card";
+// import CardContent from "@mui/material/CardContent";
 
 import "./App.css";
 
@@ -49,6 +51,13 @@ function App() {
           Areas for {submittedArea}: {areas.length}
         </div>
       )}
+      {/* {submittedArea && (
+        <div>
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent></CardContent>
+          </Card>
+        </div>
+      )} */}
     </div>
   );
 }
