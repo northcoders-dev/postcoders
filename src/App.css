@@ -6,7 +6,18 @@
 }
 
 .App {
-  height: 90vh;
+  height:fit-content;
   width: 90vw;
   border: solid grey 2px;
+}
+
+ul {
+	list-style-type: none;
+}
+
+#areaList {
+  width:100%;
+  display:flex;
+  align-items: center;
+  justify-content: center;
 }
