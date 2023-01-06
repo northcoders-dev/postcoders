@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAreaData } from "./api";
+import AreaCard from "./components/AreaCard";
 
 import "./App.css";
 
@@ -75,6 +76,7 @@ function App() {
       ) : (
         ""
       )}
+      <div className="cardContainer">{areas.map(AreaCard)}</div>
     </div>
   );
 }
