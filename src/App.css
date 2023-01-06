@@ -10,3 +10,8 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.error {
+  color: red;
+  border: solid red 2px
+}

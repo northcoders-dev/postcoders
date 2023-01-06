@@ -6,6 +6,7 @@ import './App.css'
 function App() {
 
   const [areas, setAreas] = useState([]);
+  const [error, setError] = useState(false);
 
   const load = async () => {
     try {
@@ -13,9 +14,9 @@ function App() {
 
       areas.concat(areaData);
   
-      setAreas(areas);
+      setAreas(areaData);
     } catch (error) {
-      window.alert("todo: fix app")
+      setError(error.code);
     }
   }
 
@@ -27,6 +28,7 @@ function App() {
     <div className="App">
       <h1>Postcoders</h1>
       <h2>{`Areas for BB10: ${areas.length}`}</h2>
+      <div className={error? "error" : null}>{error? <p>{error}</p> : null}</div>
     </div>
   )
 }
