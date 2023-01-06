@@ -1,31 +1,34 @@
 import { useEffect, useState } from "react";
-import { getAreaData } from "./api";
+import axios from "axios";
+// import { getAreaData } from "./api";
 
 import "./App.css";
 
 function App() {
   const [areas, setAreas] = useState([]);
-
-  const load = async () => {
-    try {
-      const areaData = await getAreaData();
-
-      areas.concat(areaData);
-
-      setAreas(areaData);
-    } catch (error) {
-      window.alert("todo: fix app");
-    }
-  };
+  const [outcode, setOutcode] = useState("");
 
   useEffect(() => {
-    load();
-  }, []);
+    axios.get(`https://api.zippopotam.us/GB/${outcode}`).then((res) => {
+      console.log(res.data.places, "axios");
+      setAreas(res.data.places.length);
+      console.log(areas, "areas state inside axios");
+    });
+  }, [outcode]);
 
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      <h2>{`Areas for BB10: ${areas.length}`}</h2>
+      <form>
+        Outcode:
+        <input
+          type="text"
+          placeholder="e.g. L39"
+          value={outcode}
+          onChange={(e) => setOutcode(e.target.value)}
+        ></input>
+      </form>
+      <h2>{`Areas for ${outcode.toUpperCase()}: ${areas}`}</h2>
     </div>
   );
 }
