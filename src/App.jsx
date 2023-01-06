@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { getAreaData } from './api'
 import './App.css'
+import { CardList } from './components/CardList';
 import { InputPostcode } from './components/InputPostcode';
 
 
@@ -46,6 +47,8 @@ function App() {
       <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
       <InputPostcode setPostcode={setPostcode} />
       <div className={error? "error" : null}>{error? <p>{error}</p> : null}</div>
+      <CardList areas={areas}/>
+      {isLoading ? <p>Loading... </p> : null}
     </div>
   )
 }
