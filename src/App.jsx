@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { AreaInfoCard } from "./components/AreaInfoCard";
 // import { getAreaData } from "./api";
 
 import "./App.css";
@@ -7,14 +8,21 @@ import "./App.css";
 function App() {
   const [areas, setAreas] = useState([]);
   const [outcode, setOutcode] = useState("");
+  const [outcodeFromClick, setOutcodeFromClick] = useState("");
+
+  const handleClick = () => {
+    setOutcodeFromClick(outcode);
+  };
 
   useEffect(() => {
-    axios.get(`https://api.zippopotam.us/GB/${outcode}`).then((res) => {
-      console.log(res.data.places, "axios");
-      setAreas(res.data.places.length);
-      console.log(areas, "areas state inside axios");
-    });
-  }, [outcode]);
+    if (outcodeFromClick !== "") {
+      axios
+        .get(`https://api.zippopotam.us/GB/${outcodeFromClick}`)
+        .then((res) => {
+          setAreas(res.data.places);
+        });
+    }
+  }, [outcodeFromClick]);
 
   return (
     <div className="App">
@@ -27,8 +35,14 @@ function App() {
           value={outcode}
           onChange={(e) => setOutcode(e.target.value)}
         ></input>
+        <button type="button" onClick={handleClick}>
+          Search
+        </button>
       </form>
-      <h2>{`Areas for ${outcode.toUpperCase()}: ${areas}`}</h2>
+      <h2>{`Areas for ${outcode.toUpperCase()}: ${areas.length}`}</h2>
+      {areas.map((area) => (
+        <AreaInfoCard key={area["place name"]} area={area} />
+      ))}
     </div>
   );
 }
