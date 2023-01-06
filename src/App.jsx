@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getAreaData } from './api';
-
 import './App.css';
 import AreaCard from './AreaCard';
 
@@ -8,12 +7,18 @@ function App() {
 	const [areas, setAreas] = useState([]);
 	const [userInput, setUserInput] = useState('');
 	const [outcode, setOutcode] = useState('BB10');
+	const cache = useRef({});
 
 	const load = async () => {
 		try {
-			const areaData = await getAreaData(outcode);
-
-			setAreas(areaData);
+			if (cache.current[outcode]) {
+				const cachedOutcode = cache.current[outcode];
+				setAreas(cachedOutcode);
+			} else {
+				const areaData = await getAreaData(outcode);
+				cache.current[outcode] = areaData;
+				setAreas(areaData);
+			}
 		} catch (error) {
 			window.alert('todo: fix app');
 		}
