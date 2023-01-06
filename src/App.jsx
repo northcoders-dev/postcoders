@@ -22,7 +22,7 @@ function App() {
         JSON.stringify(areaData)
       );
     } catch (error) {
-      window.alert("todo: fix app");
+      window.alert(error.response.status + " " + error.response.statusText);
     }
   };
 
@@ -76,7 +76,7 @@ function App() {
           />
         </label>
         <br />
-        <input type="submit" value="submit" />
+        <input type="submit" value="Search" />
       </form>
       {renderedOutcode ? (
         <h2>{`Areas for ${renderedOutcode}: ${areas.length}`} </h2>
