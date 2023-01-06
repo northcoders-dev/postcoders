@@ -1,0 +1,14 @@
+.card {
+  padding: 10px;
+  width: 200px;
+}
+
+.name {
+  margin-bottom: 0;
+}
+
+.state {
+  font-style: italic;
+  font-size: smaller;
+  margin: 0;
+}

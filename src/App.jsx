@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAreaData } from "./api";
 import "./App.css";
+import PlaceCard from "./components/PlaceCard";
 import PostCodeEntry from "./components/PostCodeEntry";
 import SubmitButton from "./components/SubmitButton";
 
@@ -45,6 +46,9 @@ function App() {
       {submitted && !loading && !error && (
         <>
           <h2>{`Areas for ${submitted}: ${areas.length}`}</h2>
+          <div className="card-container">
+            <PlaceCard areas={areas} />
+          </div>
         </>
       )}
     </div>
