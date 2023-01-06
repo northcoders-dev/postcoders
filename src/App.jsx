@@ -5,27 +5,50 @@ import "./App.css";
 
 function App() {
   const [areas, setAreas] = useState([]);
+  const [inputArea, setInputArea] = useState("");
+  const [submittedArea, setSubmittedArea] = useState("");
 
-  const load = async () => {
+  function handleChange(event) {
+    setInputArea(event.target.value);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    setSubmittedArea(inputArea);
+    load(inputArea);
+  }
+
+  const load = async (submittedArea) => {
     try {
-      const areaData = await getAreaData();
+      const areaData = await getAreaData(submittedArea);
 
-      setAreas([...areas, ...areaData]); // areas.concat(areaData);
-
-      // setAreas(areas);
+      setAreas(areaData);
     } catch (error) {
       window.alert("todo: fix app");
     }
   };
 
   useEffect(() => {
-    load();
-  }, []);
+    if (submittedArea) {
+      load(submittedArea);
+    }
+  }, [submittedArea]);
 
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      <h2>{`Areas for BB10: ${areas.length}`}</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Enter Area Code:
+          <input type="text" value={inputArea} onChange={handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+      {submittedArea && (
+        <div>
+          Areas for {submittedArea}: {areas.length}
+        </div>
+      )}
     </div>
   );
 }
