@@ -10,3 +10,9 @@
   width: 90vw;
   border: solid grey 2px;
 }
+
+.Results {
+  margin:10px;
+  height:70vh;
+  overflow: scroll;
+}

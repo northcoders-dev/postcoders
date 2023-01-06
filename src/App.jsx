@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAreaData } from "./api";
 
 import "./App.css";
+import AreaCard from "./components/AreaCard";
 import SearchBar from "./components/SearchBar";
 
 function App() {
@@ -32,7 +33,12 @@ function App() {
       {isEmpty ? (
         <p>Please enter postcode 'outcode' to display results</p>
       ) : (
-        <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
+        <div className="Results">
+          <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
+          {areas.map((area, index) => {
+            return <AreaCard key={index} area={area} />;
+          })}
+        </div>
       )}
     </div>
   );
