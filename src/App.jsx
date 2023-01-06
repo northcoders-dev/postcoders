@@ -3,20 +3,22 @@ import { getAreaData } from './api'
 import './App.css'
 import { CardList } from './components/CardList';
 import { InputPostcode } from './components/InputPostcode';
+import { checkPostcodeInCache, filterAreasByPostcode } from './utils/utils';
 
 
 function App() {
 
   const [areas, setAreas] = useState([]);
-  const [postcode, setPostcode] = useState("")
+  const [postcode, setPostcode] = useState("");
   const [error, setError] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
+  const areasByPostcode = filterAreasByPostcode(areas, postcode);
+ 
   const load = async () => { 
-
     setError(false);
 
-    if (!postcode) {
+    if (!postcode || checkPostcodeInCache(areas, postcode)) {
       return;
     }
 
@@ -25,9 +27,19 @@ function App() {
     try {
       const areaData = await getAreaData(postcode)
 
-      areas.concat(areaData);
-  
-      setAreas(areaData);
+      const postcodeAddedToAreaData = [...areaData].map((area) => {
+        area.postcode = postcode;
+
+        return area;
+      })
+
+      setAreas((currentAreas) => {
+        const mergedAreaData = [...currentAreas].concat(postcodeAddedToAreaData)
+
+        return mergedAreaData;
+      });
+
+
     } catch (error) {
       error.message.includes(404) 
         ? setError("Postcode Not Found")
@@ -37,17 +49,21 @@ function App() {
     setIsLoading(false);
   }
 
-  useEffect(() => {
+  useEffect(() => { 
     load();
   }, [postcode]);
+
 
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      <h2>{`Areas for ${postcode}: ${areas.length}`}</h2>
+      {postcode ? 
+        <h2>{`Areas for ${postcode}: ${areasByPostcode.length}`}</h2> : 
+        <h2>Welcome to Postcoders! Complete your details below to start!</h2>
+      }
       <InputPostcode setPostcode={setPostcode} />
       <div className={error? "error" : null}>{error? <p>{error}</p> : null}</div>
-      <CardList areas={areas}/>
+      <CardList areas={areasByPostcode}/>
       {isLoading ? <p>Loading... </p> : null}
     </div>
   )

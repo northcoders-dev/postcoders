@@ -14,7 +14,7 @@ export const InputPostcode = ({ setPostcode }) => {
     
     setPostcode(outcode);
     setUserInput("");
-    console.log(outcode)
+    
   }
 
   return (
