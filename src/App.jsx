@@ -6,10 +6,12 @@ import './App.css'
 function App() {
 
   const [areas, setAreas] = useState([]);
+  const [userInput, setUserInput] = useState('')
+  const [outcode, setOutcode] = useState('BB10')
 
   const load = async () => {
     try {
-      const areaData = await getAreaData()
+      const areaData = await getAreaData(outcode)
   
       setAreas(areaData);
    
@@ -20,12 +22,25 @@ function App() {
 
   useEffect(() => {
     load();
-  }, []);
+  }, [outcode]);
+
+  const updateInput = (e) => {
+    setUserInput(e.target.value);
+  }
+
+  const changeOutcode = () => {
+    setOutcode(userInput);
+  }
 
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      <h2>{`Areas for BB10: ${areas.length}`}</h2>
+      <h2>{`Areas for ${outcode}: ${areas.length}`}</h2>
+      <div>
+        <label htmlFor='fname'>Enter outcode:</label>
+        <input type='text' id='pcode' onChange={updateInput}/>
+        <button onClick={changeOutcode}>Search</button>
+      </div>
     </div>
   )
 }
