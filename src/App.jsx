@@ -1,72 +1,66 @@
-import { useEffect, useState } from 'react'
-import { getAreaData } from './api'
-import './App.css'
-import { CardList } from './components/CardList';
-import { InputPostcode } from './components/InputPostcode';
-import { checkPostcodeInCache, filterAreasByPostcode } from './utils/utils';
-
+import { useEffect, useState } from "react";
+import { getAreaData } from "./api";
+import "./App.css";
+import { CardList } from "./components/CardList";
+import { InputPostcode } from "./components/InputPostcode";
 
 function App() {
-
   const [areas, setAreas] = useState([]);
   const [postcode, setPostcode] = useState("");
   const [error, setError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [cache, setCache] = useState({});
 
-  const areasByPostcode = filterAreasByPostcode(areas, postcode);
- 
-  const load = async () => { 
+  const load = async () => {
     setError(false);
 
-    if (!postcode || checkPostcodeInCache(areas, postcode)) {
+    if (!postcode || cache[postcode]) {
       return;
     }
 
     setIsLoading(true);
 
     try {
-      const areaData = await getAreaData(postcode)
+      const areaData = await getAreaData(postcode);
 
-      const postcodeAddedToAreaData = [...areaData].map((area) => {
-        area.postcode = postcode;
+      setAreas(areaData);
+      setCache((currCache) => {
+        const newCache = currCache;
 
-        return area;
-      })
+        newCache[postcode] = areaData;
 
-      setAreas((currentAreas) => {
-        const mergedAreaData = [...currentAreas].concat(postcodeAddedToAreaData)
-
-        return mergedAreaData;
+        return newCache;
       });
-
-
     } catch (error) {
-      error.message.includes(404) 
+      error.message.includes(404)
         ? setError("Postcode Not Found")
         : setError(error.code);
-
     }
     setIsLoading(false);
-  }
+  };
 
-  useEffect(() => { 
+  useEffect(() => {
     load();
   }, [postcode]);
 
+  const isDataInCacheOrAreas = cache[postcode] ? cache[postcode] : areas;
 
   return (
     <div className="App">
       <h1>Postcoders</h1>
-      {postcode ? 
-        <h2>{`Areas for ${postcode}: ${areasByPostcode.length}`}</h2> : 
-        <h2>Welcome to Postcoders! Complete your details below to start!</h2>
-      }
+      <h2>
+        {postcode
+          ? `Areas for ${postcode}: ${isDataInCacheOrAreas.length}`
+          : "Welcome to Postcoders! Complete your details below to start!"}
+      </h2>
       <InputPostcode setPostcode={setPostcode} />
-      <div className={error? "error" : null}>{error? <p>{error}</p> : null}</div>
-      <CardList areas={areasByPostcode}/>
-      {isLoading ? <p>Loading... </p> : null}
+      <div className={error ? "error" : null}>
+        {error ? <p>{error}</p> : null}
+      </div>
+      <p>{isLoading ? "Loading.... " : null}</p>
+      <CardList areas={isDataInCacheOrAreas} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
